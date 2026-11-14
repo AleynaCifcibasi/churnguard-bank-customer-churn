@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Ayarlar{% endblock %}
+{% block page_title %}Ayarlar{% endblock %}
+
+{% block content %}
+<div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="panel">
+      <div class="panel-header"><h2>Risk seviyesi eşikleri</h2>
+        <p>Müşterinin kayıp olasılığına göre Düşük, Orta ve Yüksek risk gruplarının sınırlarını belirleyin.</p></div>
+      <div class="panel-body">
+        <div id="settings-message" class="alert d-none" role="status"></div>
+        <form id="threshold-form" novalidate>
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              <label class="form-label fw-semibold" for="low-input">Düşük riskin üst sınırı (%)</label>
+              <input type="number" class="form-control" id="low-input" min="1" max="99" step="0.5" required data-label="Düşük risk sınırı">
+              <div class="invalid-feedback"></div>
+              <div class="form-text">Bu değerin altındaki olasılıklar <strong>Düşük</strong> risktir.</div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label fw-semibold" for="high-input">Yüksek riskin alt sınırı (%)</label>
+              <input type="number" class="form-control" id="high-input" min="1" max="99" step="0.5" required data-label="Yüksek risk sınırı">
+              <div class="invalid-feedback"></div>
+              <div class="form-text">Bu değer ve üstü <strong>Yüksek</strong> risktir. Arası <strong>Orta</strong>.</div>
+            </div>
+          </div>
+
+          <div class="zone-bar mt-4" id="zone-bar"></div>
+          <div class="zone-scale"><span>%0</span><span id="zone-low">%30</span><span id="zone-high">%60</span><span>%100</span></div>
+
+          <h3 class="h6 mt-4">Bu eşiklerle aktif müşteri dağılımı</h3>
+          <div class="row g-2" id="preview-cards">
+            <div class="col-4"><div class="mini-card risk-low"><div class="mini-label">Düşük</div><div class="mini-value" id="pv-low">–</div></div></div>
+            <div class="col-4"><div class="mini-card risk-medium"><div class="mini-label">Orta</div><div class="mini-value" id="pv-medium">–</div></div></div>
+            <div class="col-4"><div class="mini-card risk-high"><div class="mini-label">Yüksek</div><div class="mini-value" id="pv-high">–</div></div></div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-4" id="save-btn" disabled>Kaydet</button>
+            <button type="button" class="btn btn-outline-secondary" id="revert-btn" disabled>Değişikliği geri al</button>
+            <button type="button" class="btn btn-outline-secondary" id="default-btn">Varsayılana dön (%30 / %60)</button>
+          </div>
+          <p class="page-note mt-3 mb-0">Eşikleri değiştirmek modeli yeniden eğitmez. Dashboard, müşteri listesi ve raporlar yeni eşiklere göre anında yeniden hesaplanır.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="panel">
+      <div class="panel-header"><h2>Model bilgisi</h2><p>Kayıtlı modelin özeti (test verisi sonuçları)</p></div>
+      <div class="panel-body">
+        <dl class="info-list" id="model-info"><div><dt>Yükleniyor…</dt><dd></dd></div></dl>
+        <p class="page-note mt-3 mb-0">Model, ayrılan müşterilerin yaklaşık dörtte üçünü yakalayacak şekilde ayarlıdır. Bunun bedeli, yüksek riskli denen müşterilerin bir kısmının aslında kalmasıdır.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

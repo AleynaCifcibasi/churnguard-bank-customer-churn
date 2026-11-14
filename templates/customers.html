@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Müşteriler{% endblock %}
+{% block page_title %}Müşteri Listesi{% endblock %}
+
+{% block content %}
+<div class="panel mb-3 filters">
+  <div class="panel-body">
+    <div class="filter-grid">
+      <div>
+        <label class="form-label" for="f-search">Müşteri ID ara</label>
+        <input type="search" class="form-control" id="f-search" placeholder="Örn. C1042" maxlength="20" autocomplete="off">
+      </div>
+      <div>
+        <label class="form-label" for="f-risk">Risk seviyesi</label>
+        <select class="form-select" id="f-risk">
+          <option value="">Tümü</option><option value="high">Yüksek</option>
+          <option value="medium">Orta</option><option value="low">Düşük</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="f-status">Durum</label>
+        <select class="form-select" id="f-status">
+          <option value="">Tümü</option><option value="active">Bankada kalan</option><option value="churned">Ayrılan</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="f-gender">Cinsiyet</label>
+        <select class="form-select" id="f-gender">
+          <option value="">Tümü</option><option value="Female">Kadın</option><option value="Male">Erkek</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="f-segment">Segment</label>
+        <select class="form-select" id="f-segment">
+          <option value="">Tümü</option><option value="Standard">Standard</option>
+          <option value="Gold">Gold</option><option value="Premium">Premium</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="f-active">Üyelik</label>
+        <select class="form-select" id="f-active">
+          <option value="">Tümü</option><option value="1">Aktif</option><option value="0">Pasif</option>
+        </select>
+      </div>
+      <div class="filter-reset">
+        <button type="button" class="btn btn-outline-secondary w-100" id="f-reset">Temizle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="panel">
+  <div class="table-responsive">
+    <table class="table table-customers" id="customers-table">
+      <thead>
+        <tr>
+          <th class="sortable" data-sort="customer_id">Müşteri ID</th>
+          <th class="sortable" data-sort="age">Yaş</th>
+          <th>Cinsiyet</th>
+          <th class="sortable" data-sort="credit_score">Kredi skoru</th>
+          <th class="sortable text-end" data-sort="balance">Bakiye</th>
+          <th class="sortable text-center" data-sort="num_products">Ürün</th>
+          <th>Üyelik</th>
+          <th class="sortable" data-sort="churn_probability">Kayıp olasılığı</th>
+          <th>Risk</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      <tbody id="customers-body">
+        <tr><td colspan="10" class="empty-state">Yükleniyor…</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 border-top">
+    <div class="text-muted small" id="page-info">&nbsp;</div>
+    <nav aria-label="Sayfalar"><ul class="pagination pagination-sm mb-0" id="pagination"></ul></nav>
+  </div>
+</div>
+<p class="page-note mt-3 mb-0">Kayıp olasılığı model tahminidir, kesin sonuç değildir. Bir satıra tıklayarak müşteri detayını ve riski etkileyen faktörleri görebilirsiniz.</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/customers.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="row g-3 mb-3">
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card"><div class="label">Toplam müşteri</div>
+      <div class="value skeleton" data-field="total_customers">0000</div><div class="sub">Temizlenmiş kayıt sayısı</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card churn"><div class="label">Kaybedilen müşteri</div>
+      <div class="value skeleton" data-field="churned_customers">0000</div><div class="sub">Bankadan ayrılanlar</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card stay"><div class="label">Aktif müşteri</div>
+      <div class="value skeleton" data-field="active_customers">0000</div><div class="sub">Bankada kalanlar</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card rate"><div class="label">Müşteri kayıp oranı</div>
+      <div class="value skeleton" data-field="churn_rate_pct">%00,0</div><div class="sub">Kaybedilen / toplam</div></div>
+  </div>
+</div>
+
+<h2 class="h6 text-uppercase text-muted mb-2">Aktif müşterilerin risk dağılımı</h2>
+<div class="row g-3 mb-3">
+  <div class="col-12 col-md-4">
+    <div class="panel stat-card risk-high"><div class="label">Yüksek riskli</div>
+      <div class="value skeleton" data-field="risk_high">0000</div><div class="sub" data-field="risk_high_range">&nbsp;</div></div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="panel stat-card risk-medium"><div class="label">Orta riskli</div>
+      <div class="value skeleton" data-field="risk_medium">0000</div><div class="sub" data-field="risk_medium_range">&nbsp;</div></div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="panel stat-card risk-low"><div class="label">Düşük riskli</div>
+      <div class="value skeleton" data-field="risk_low">0000</div><div class="sub" data-field="risk_low_range">&nbsp;</div></div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Müşteri kayıp dağılımı</h2><p>Kalan ve ayrılan müşteriler</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-churn"></canvas></div></div></div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Risk seviyelerine göre aktif müşteriler</h2><p>Model tahminine göre, güncel risk eşikleriyle</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-risk"></canvas></div></div></div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Yaş gruplarına göre müşteri kaybı</h2><p>Her gruptaki kayıp oranı</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-age"></canvas></div></div></div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Cinsiyete göre müşteri kaybı</h2><p>Her gruptaki kayıp oranı</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-gender"></canvas></div></div></div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Kredi kartı kullanımına göre müşteri kaybı</h2><p>Her gruptaki kayıp oranı</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-card"></canvas></div></div></div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="panel h-100"><div class="panel-header"><h2>Müşteri segmentlerine göre kayıp oranı</h2><p>Segment kuralları bakiye ve maaşa dayanır</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-segment"></canvas></div></div></div>
+  </div>
+  <div class="col-12">
+    <div class="panel"><div class="panel-header"><h2>Model doğrulaması: risk grubuna göre gerçekte ayrılanlar</h2>
+      <p>Model riski doğru sıralıyorsa, yüksek risk grubunda ayrılanların payı belirgin şekilde daha büyük olmalıdır</p></div>
+      <div class="panel-body"><div class="chart-box"><canvas id="chart-outcome"></canvas></div>
+        <p class="chart-caption" id="outcome-caption"></p></div></div>
+  </div>
+</div>
+
+<p class="page-note mt-3 mb-0">Veriler kurgusaldır. Risk seviyeleri model olasılıklarına dayanır; olasılıklar kesin sonuç değil, sıralama amaçlı tahmindir.</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

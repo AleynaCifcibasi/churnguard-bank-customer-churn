@@ -1,0 +1,6 @@
+{
+  "risk_thresholds": {
+    "low_max": 0.4,
+    "high_min": 0.7
+  }
+}

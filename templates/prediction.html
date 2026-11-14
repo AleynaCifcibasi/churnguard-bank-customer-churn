@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Yeni Müşteri Tahmini{% endblock %}
+{% block page_title %}Yeni Müşteri Tahmini{% endblock %}
+
+{% block content %}
+{% set geo_labels = {"Ic Anadolu": "İç Anadolu", "Dogu Anadolu": "Doğu Anadolu", "Guneydogu Anadolu": "Güneydoğu Anadolu"} %}
+<div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="panel">
+      <div class="panel-header d-flex flex-wrap justify-content-between align-items-start gap-2">
+        <div><h2>Müşteri bilgileri</h2><p>Bilgileri girin, model müşterinin ayrılma olasılığını hesaplasın.</p></div>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-sample="low">Düşük riskli örnek</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-sample="high">Yüksek riskli örnek</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <form id="predict-form" class="predict-form" novalidate>
+          <div class="form-section-title">Kişisel bilgiler</div>
+          <div class="row g-3">
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Age">Yaş</label>
+              <input type="number" class="form-control" id="Age" name="Age" min="18" max="100" step="1" required data-label="Yaş" placeholder="Örn. 42">
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Gender">Cinsiyet</label>
+              <select class="form-select" id="Gender" name="Gender" required data-label="Cinsiyet">
+                <option value="">Seçiniz</option>
+                <option value="Female">Kadın</option>
+                <option value="Male">Erkek</option>
+              </select>
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Geography">Bölge</label>
+              <select class="form-select" id="Geography" name="Geography" required data-label="Bölge">
+                <option value="">Seçiniz</option>
+                {% for g in geographies %}
+                <option value="{{ g }}">{{ geo_labels.get(g, g) }}</option>
+                {% endfor %}
+              </select>
+              <div class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Finansal bilgiler</div>
+          <div class="row g-3">
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="CreditScore">Kredi skoru</label>
+              <input type="number" class="form-control" id="CreditScore" name="CreditScore" min="300" max="850" step="1" required data-label="Kredi skoru" placeholder="300 – 850">
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Balance">Hesap bakiyesi (₺)</label>
+              <input type="number" class="form-control" id="Balance" name="Balance" min="0" max="1000000000" step="any" required data-label="Hesap bakiyesi" placeholder="Örn. 85000">
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="EstimatedSalary">Tahmini yıllık maaş (₺)</label>
+              <input type="number" class="form-control" id="EstimatedSalary" name="EstimatedSalary" min="0" max="1000000000" step="any" required data-label="Tahmini maaş" placeholder="Örn. 95000">
+              <div class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div class="form-section-title">Bankayla ilişki</div>
+          <div class="row g-3">
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Tenure">Müşteri süresi (yıl)</label>
+              <input type="number" class="form-control" id="Tenure" name="Tenure" min="0" max="40" step="1" required data-label="Müşteri süresi" placeholder="Örn. 5">
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="NumOfProducts">Ürün sayısı</label>
+              <select class="form-select" id="NumOfProducts" name="NumOfProducts" required data-label="Ürün sayısı">
+                <option value="">Seçiniz</option>
+                <option value="1">1</option><option value="2">2</option>
+                <option value="3">3</option><option value="4">4</option>
+              </select>
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label" for="Complaints">Şikayet sayısı</label>
+              <input type="number" class="form-control" id="Complaints" name="Complaints" min="0" max="20" step="1" required data-label="Şikayet sayısı" placeholder="Örn. 0">
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label" for="HasCrCard">Kredi kartı var mı?</label>
+              <select class="form-select" id="HasCrCard" name="HasCrCard" required data-label="Kredi kartı">
+                <option value="">Seçiniz</option>
+                <option value="1">Evet</option>
+                <option value="0">Hayır</option>
+              </select>
+              <div class="invalid-feedback"></div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label" for="IsActiveMember">Aktif üye mi?</label>
+              <select class="form-select" id="IsActiveMember" name="IsActiveMember" required data-label="Aktif üyelik">
+                <option value="">Seçiniz</option>
+                <option value="1">Evet</option>
+                <option value="0">Hayır</option>
+              </select>
+              <div class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <button type="submit" class="btn btn-primary px-4" id="submit-btn">
+              <span class="spinner-border spinner-border-sm d-none me-2" id="submit-spinner" aria-hidden="true"></span>
+              <span id="submit-label">Tahmin Et</span>
+            </button>
+            <button type="reset" class="btn btn-outline-secondary" id="reset-btn">Formu Temizle</button>
+          </div>
+          <p class="hint mt-3 mb-0">Örnek butonları kurgusal müşteri bilgileriyle formu doldurup tahmini hemen hesaplar. Gerçek müşteri bilgisi girmeyin.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="panel result-sticky" id="result-card">
+      <div class="panel-header"><h2>Tahmin sonucu</h2><p>Model tahmini, kesin sonuç değildir</p></div>
+      <div class="panel-body" id="result-body" aria-live="polite">
+        <div class="result-placeholder">Formu doldurup <strong>Tahmin Et</strong> düğmesine basın.<br>Sonuç burada görünecek.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

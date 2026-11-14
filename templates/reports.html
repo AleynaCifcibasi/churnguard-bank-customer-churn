@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Raporlar{% endblock %}
+{% block page_title %}Raporlar{% endblock %}
+
+{% block content %}
+<div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div class="row g-3 mb-3">
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card"><div class="label">Toplam müşteri</div>
+      <div class="value skeleton" data-field="total_customers">0000</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card churn"><div class="label">Kaybedilen müşteri</div>
+      <div class="value skeleton" data-field="churned_customers">0000</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card rate"><div class="label">Müşteri kayıp oranı</div>
+      <div class="value skeleton" data-field="churn_rate_pct">%00,0</div></div>
+  </div>
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="panel stat-card risk-high"><div class="label">Yüksek riskli aktif müşteri</div>
+      <div class="value skeleton" data-field="risk_high">0000</div></div>
+  </div>
+</div>
+
+<div class="panel mb-3">
+  <div class="panel-header d-flex flex-wrap justify-content-between align-items-start gap-2">
+    <div><h2>CSV olarak dışa aktar</h2><p>Dosyalar proje içindeki <code>exports</code> klasörüne zaman damgalı adla kaydedilir ve tarayıcıdan indirilir.</p></div>
+    <div class="d-flex align-items-center gap-2">
+      <label class="small text-muted mb-0" for="csv-format">CSV biçimi</label>
+      <select class="form-select form-select-sm" id="csv-format" style="width:auto">
+        <option value="excel">Excel (Türkçe, ; ayraçlı)</option>
+        <option value="standard">Standart (, ayraçlı)</option>
+      </select>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="export-message" class="alert d-none" role="status"></div>
+    <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <div class="export-card">
+          <h3>Tüm tahminler</h3>
+          <p>Her müşteri için bilgiler, kayıp olasılığı ve risk seviyesi.</p>
+          <button type="button" class="btn btn-primary w-100" data-export="predictions">CSV oluştur ve indir</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="export-card">
+          <h3>Yüksek riskli müşteriler</h3>
+          <p>Bankada kalan ve yüksek risk grubundaki müşteriler, riski en yüksekten başlayarak.</p>
+          <button type="button" class="btn btn-primary w-100" data-export="high_risk">CSV oluştur ve indir</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="export-card">
+          <h3>Kayıp özet raporu</h3>
+          <p>Segment, yaş grubu, bölge, cinsiyet ve kredi kartı kırılımlarında kayıp oranları.</p>
+          <button type="button" class="btn btn-primary w-100" data-export="summary">CSV oluştur ve indir</button>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="h6 mt-4">Son oluşturulan dosyalar</h3>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle mb-0">
+        <thead><tr><th>Dosya</th><th>Rapor</th><th class="text-end">Boyut</th><th>Oluşturulma</th><th></th></tr></thead>
+        <tbody id="exports-body"><tr><td colspan="5" class="text-muted">Yükleniyor…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="panel mb-3">
+  <div class="panel-header"><h2>Kayıp özet raporu</h2>
+    <p>Kırmızı çubuk genel ortalamanın üstündeki, mavi çubuk altındaki ya da eşit gruplardır.</p></div>
+  <div class="panel-body">
+    <div class="row g-4">
+      <div class="col-12 col-xl-6"><h3 class="h6">Segmente göre</h3><div id="tbl-segment"></div></div>
+      <div class="col-12 col-xl-6"><h3 class="h6">Yaş grubuna göre</h3><div id="tbl-age"></div></div>
+      <div class="col-12 col-xl-6"><h3 class="h6">Bölgeye göre</h3><div id="tbl-geo"></div></div>
+      <div class="col-12 col-xl-6"><h3 class="h6">Cinsiyete göre</h3><div id="tbl-gender"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header d-flex flex-wrap justify-content-between align-items-start gap-2">
+    <div><h2>Yüksek riskli müşteriler</h2><p id="high-subtitle">Bankada kalan, yüksek risk grubundaki müşteriler (riski en yüksek ilk 15)</p></div>
+    <a class="btn btn-sm btn-outline-primary" id="high-all-link"
+       href="/customers?risk=high&status=active&sort_by=churn_probability&sort_order=desc">Tümünü müşteri listesinde gör</a>
+  </div>
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table table-sm align-middle mb-0">
+        <thead><tr><th>Müşteri ID</th><th>Yaş</th><th>Cinsiyet</th><th class="text-end">Bakiye</th><th>Üyelik</th><th>Kayıp olasılığı</th><th>Risk</th></tr></thead>
+        <tbody id="high-body"><tr><td colspan="7" class="text-muted">Yükleniyor…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<p class="page-note mt-3 mb-0">Veriler kurgusaldır. Olasılıklar kesin sonuç değil, model tahminidir.</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

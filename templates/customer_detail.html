@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Müşteri {{ customer_id }}{% endblock %}
+{% block page_title %}Müşteri Detayı{% endblock %}
+
+{% block content %}
+<div id="detail-root" data-customer-id="{{ customer_id }}">
+  <a href="{{ url_for('customers_page') }}" class="btn btn-sm btn-outline-secondary mb-3" id="back-link">← Müşteri listesine dön</a>
+  <div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+  <div class="panel mb-3">
+    <div class="panel-body d-flex flex-wrap align-items-center gap-3">
+      <div>
+        <div class="text-muted small">Müşteri numarası</div>
+        <div class="h4 mb-0" id="d-id">{{ customer_id }}</div>
+      </div>
+      <div class="ms-auto d-flex gap-2" id="d-badges"></div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-5">
+      <div class="panel h-100"><div class="panel-header"><h2>Kayıp olasılığı</h2><p>Model tahmini, kesin sonuç değildir</p></div>
+        <div class="panel-body">
+          <div class="big-prob" id="d-prob">—</div>
+          <div class="gauge" id="d-gauge"><div class="gauge-marker" id="d-marker" style="left:0%"></div></div>
+          <div class="gauge-scale"><span>%0</span><span id="d-low-mark"></span><span id="d-high-mark"></span><span>%100</span></div>
+          <p class="mt-3 mb-0 small text-muted" id="d-risk-text"></p>
+        </div></div>
+    </div>
+    <div class="col-12 col-lg-7">
+      <div class="panel h-100"><div class="panel-header"><h2>Müşteri bilgileri</h2></div>
+        <div class="panel-body"><dl class="info-list" id="d-info"><div><dt>Yükleniyor…</dt><dd></dd></div></dl></div></div>
+    </div>
+    <div class="col-12">
+      <div class="panel"><div class="panel-header"><h2>Riski etkileyen faktörler</h2>
+        <p>Her çubuk, bu özelliğin olasılığı "tipik müşteriye" göre kaç puan artırdığını (kırmızı) veya azalttığını (yeşil) gösterir. Bu, modelin kararına katkıdır; neden-sonuç ilişkisi değildir.</p></div>
+        <div class="panel-body" id="d-factors">Yükleniyor…</div></div>
+    </div>
+  </div>
+  <p class="page-note mt-3 mb-0" id="d-disclaimer"></p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/customer_detail.js') }}"></script>
+{% endblock %}
