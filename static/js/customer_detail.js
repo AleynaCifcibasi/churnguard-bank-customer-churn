@@ -36,7 +36,7 @@
     const rows = [
       ["Yaş", c.age],
       ["Cinsiyet", GENDER_LABELS[c.gender] || c.gender],
-      ["Bölge", c.geography || "Bilinmiyor"],
+      ["Bölge", GEOGRAPHY_LABELS[c.geography] || c.geography || "Bilinmiyor"],
       ["Kredi skoru", c.credit_score === null ? "Bilinmiyor" : Math.round(c.credit_score)],
       ["Müşteri süresi", c.tenure + " yıl"],
       ["Hesap bakiyesi", fmt.money(c.balance)],

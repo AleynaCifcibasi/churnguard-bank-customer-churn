@@ -38,6 +38,7 @@ const fmt = {
 };
 
 const GENDER_LABELS = { Female: "Kadın", Male: "Erkek" };
+const GEOGRAPHY_LABELS = { "Ic Anadolu": "İç Anadolu", "Dogu Anadolu": "Doğu Anadolu", "Guneydogu Anadolu": "Güneydoğu Anadolu" };
 
 /** Ust bardaki bildirim zilini gercek verilerle doldurur. */
 async function loadNotifications() {

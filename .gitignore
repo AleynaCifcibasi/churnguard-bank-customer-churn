@@ -1,6 +1,8 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
 exports/*.csv
+*.tmp
 .pytest_cache/
 .ipynb_checkpoints/
